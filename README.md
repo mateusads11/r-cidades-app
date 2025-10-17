@@ -19,7 +19,7 @@ Conforme a atividade proposta, o grupo foi dividido em duas equipes para a cria�
 
 A base para ambas as propostas é uma estrutura de dados robusta, projetada para suportar todas as funcionalidades essenciais do sistema.
 
-* **Diagrama do Banco de Dados:** [Visualize a estrutura completa aqui.](./assets/diagrama_entidade_relacionamento.png)
+* **Diagrama do Banco de Dados:** [Visualize a estrutura completa aqui.](./docs/diagrama_entidade_relacionamento.png)
 * **Script SQL:** [O código para criação do banco de dados está disponível aqui.](./database/schema.sql)
 
 ## 👥 Equipe
