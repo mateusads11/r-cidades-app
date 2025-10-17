@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Projeto R+ Cidades: Aplicativo de Doação de Materiais de Construção
 
 ## 🎯 Objetivo do Projeto
@@ -37,3 +38,6 @@ A base para ambas as propostas é uma estrutura de dados robusta, projetada para
 ---
 
 > Repositório criado para a disciplina de Projeto Interdisciplinar do curso de [Seu Curso] da CESUSC - 2025.
+=======
+# Projeto R+ Cidades
+>>>>>>> master
