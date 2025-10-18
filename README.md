@@ -24,7 +24,7 @@ A base para ambas as propostas é uma estrutura de dados robusta, projetada para
 
 ## 👥 Equipe
 
-* **Líder de Projeto & Tech Lead:** Mateus [Sobrenome]
+* **Líder de Projeto & Tech Lead:** [Nome] [Sobrenome]
 * **Squad de Produto & UX (Time A):** [Nome], [Nome]
 * **Squad de UI & Design (Time A):** [Nome], [Nome]
 * **Squad de Produto & UX (Time B):** [Nome], [Nome]
