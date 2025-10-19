@@ -1,16 +1,3 @@
-Esta tarefa define os perfis de usuário (Personas) que guiarão o design e desenvolvimento do R+Cidades. As personas são baseadas nos documentos de pesquisa sobre o mercado de construção e o déficit habitacional em Florianópolis.
-
-**Perfis de Doadores:**
-1.  Gestor de ESG (Grande Construtora)
-2.  Gestor Público (Prefeitura/Órgãos)
-3.  PME/Cidadão (Foco em Conveniência)
-
-**Perfis de Beneficiários:**
-1.  Chefe de Família (Autoconstrução)
-2.  Líder Comunitário (Cooperativa)
-
-*Artefato concluído e salvo em `/docs/personas_de_usuario.md`.*
-
 [UX] Definir Personas de Usuários (Doador e Beneficiário)
 
 Parte 1: Perfis de Doadores (Baseado na Pesquisa)

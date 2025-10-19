@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R+Cidades - Protótipo v3.0</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts (Montserrat + Roboto) -->
+    <link rel="preconnect" href="https://fonts.googleapis">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- CSS Customizado com a Paleta "Oásis Urbano" -->
+    <style>
+        /*
+         * Paleta "Oásis Urbano" (Proposta de Identidade Visual, Seção 6.1)
+         * Primária (Natureza, Calma): Verde Sálvia - #8A9A5B
+         * Secundária (Esperança, Clareza): Azul Céu - #87CEEB
+         * Neutros (Naturalidade, Conforto): Areia - #F4A460, Off-white - #F5F5DC
+         * Destaque (Energia, Otimismo): Amarelo Girassol - #FFC72C
+        */
+        :root {
+            --cor-primaria: #8A9A5B;      /* Verde Sálvia */
+            --cor-secundaria: #87CEEB;    /* Azul Céu */
+            --cor-destaque: #FFC72C;      /* Amarelo Girassol */
+            --cor-areia: #F4A460;         /* Areia */
+            --cor-neutra-clara: #f8f9fa;
+            --cor-neutra-escura: #343a40;
+            --font-titulo: 'Montserrat', sans-serif;
+            --font-corpo: 'Roboto', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-corpo);
+            color: var(--cor-neutra-escura);
+            background-color: var(--cor-neutra-clara);
+        }
+
+        h1, h2, h3, h4, .navbar-brand, .btn, .nav-link {
+            font-family: var(--font-titulo);
+            font-weight: 700;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+        
+        /* --- Componentes Customizados --- */
+        .navbar-custom {
+            background-color: var(--cor-primaria);
+        }
+
+        .btn-destaque {
+            background-color: var(--cor-destaque);
+            border-color: var(--cor-destaque);
+            color: var(--cor-neutra-escura);
+            font-weight: 700;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-destaque:hover {
+            background-color: #eab427;
+            border-color: #eab427;
+            color: var(--cor-neutra-escura);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-secundario {
+             background-color: var(--cor-secundaria);
+            border-color: var(--cor-secundaria);
+            color: var(--cor-neutra-escura);
+        }
+        .btn-secundario:hover {
+            background-color: #76b7d1;
+            border-color: #76b7d1;
+            color: var(--cor-neutra-escura);
+        }
+
+        /* --- Estilos da Landing Page (mantidos) --- */
+        #hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1581094369322-2f05c36d6b13?q=80&w=2070&auto=format&fit=crop') center center/cover no-repeat;
+            color: white; padding: 120px 0;
+        }
+        #hero h1 { font-size: 3.5rem; font-weight: 800; }
+        .persona-card { border: 0; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.07); border-radius: 15px; padding: 2rem; height: 100%;}
+        .persona-card .icon { font-size: 3rem; color: var(--cor-primaria); }
+
+        /* --- Estilos da Seção Match Visual --- */
+        .match-step {
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 15px;
+            height: 100%;
+            border: 1px solid #E0E0E0;
+        }
+        .match-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem auto;
+            background-color: var(--cor-secundaria);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .match-icon-wrapper i {
+            font-size: 2.5rem;
+            color: var(--cor-neutra-escura);
+        }
+        .match-flow-container {
+            position: relative;
+        }
+        @media (min-width: 768px) {
+            .match-flow-container .col-md-3:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                top: 40px;
+                right: -22px; /* Ajuste para centralizar */
+                width: 44px; /* Largura da seta */
+                height: 30px;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='24' fill='%238A9A5B' class='bi bi-arrow-right-short' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: center;
+                z-index: 1;
+                opacity: 0.5;
+            }
+        }
+
+        /* --- Estilos do Protótipo "App" --- */
+        .app-view { animation: fadeIn 0.5s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .material-card { cursor: pointer; transition: all 0.2s ease-in-out; border-radius: 12px; overflow: hidden; border: 1px solid #E0E0E0; }
+        .material-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .badge-local-p2p { background-color: var(--cor-areia); color: var(--cor-neutra-escura); }
+        .badge-local-banco { background-color: var(--cor-secundaria); color: var(--cor-neutra-escura); }
+        .status-solicitacao { font-weight: 700; }
+        .status-pendente { color: var(--cor-areia); }
+        .status-aprovado { color: var(--cor-primaria); }
+        .status-rejeitado { color: #dc3545; }
+        .metric-card { background-color: #fff; border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid #E0E0E0;}
+        .metric-card .icon { font-size: 2.5rem; color: var(--cor-primaria); }
+        .metric-card .metric-value { font-size: 2.5rem; font-family: var(--font-titulo); font-weight: 800; color: var(--cor-primaria); }
+        
+        #profile-selection-modal .card-profile { cursor: pointer; transition: all 0.2s ease; }
+        #profile-selection-modal .card-profile:hover { border-color: var(--cor-destaque); box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
+    </style>
+</head>
+<body>
+
+    <!-- ======================= -->
+    <!--      BARRA DE NAVEGAÇÃO   -->
+    <!-- ======================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fs-4" href="#" onclick="showLandingPage()">R+Cidades</a>
+            <!-- Links do App (visibilidade controlada via JS) -->
+            <div id="nav-app-links" class="navbar-nav d-none">
+                <!-- Links Beneficiário -->
+                <div id="nav-beneficiario" class="d-none">
+                    <a class="nav-link" href="#" onclick="showAppView('catalogo')">Catálogo</a>
+                    <a class="nav-link" href="#" onclick="showAppView('minhas-solicitacoes')">Minhas Solicitações</a>
+                </div>
+                <!-- Links Doador -->
+                <div id="nav-doador" class="d-none">
+                     <a class="nav-link" href="#" onclick="showAppView('meus-anuncios')">Meus Anúncios</a>
+                     <a class="nav-link" href="#" onclick="showAppView('dashboard')">Dashboard de Impacto</a>
+                </div>
+            </div>
+             <div id="nav-landing-links" class="ms-auto">
+                 <button class="btn btn-outline-light" onclick="profileSelectionModal.show()">Entrar no Protótipo</button>
+            </div>
+             <div id="nav-app-actions" class="ms-auto d-none">
+                <button id="btn-anunciar-material" class="btn btn-destaque d-none" onclick="showAppView('anunciar-material')"><i class="bi bi-plus-circle-fill me-2"></i>Anunciar Material</button>
+                <button class="btn btn-sm btn-outline-light" onclick="showLandingPage()">Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- =================================== -->
+    <!--      CONTEÚDO DA LANDING PAGE       -->
+    <!-- =================================== -->
+    <main id="landing-page-content">
+        <!-- Seções da Landing Page (Hero, Desafio, Solução, Personas, CTA) -->
+        <section id="hero" class="text-center">
+            <div class="container">
+                <h1 class="mb-4">Transformando Resíduos de Construção em Habitação Digna.</h1>
+                <p class="lead mb-5 fs-5 mx-auto" style="max-width: 800px;">Em Florianópolis, 120.000 toneladas de resíduos de construção são descartadas por ano, enquanto 17.000 famílias lutam pelo direito à moradia. O R+Cidades é a ponte tecnológica que transforma este passivo ambiental num ativo social.</p>
+                <button class="btn btn-destaque" onclick="profileSelectionModal.show()">Ver o protótipo em ação</button>
+            </div>
+        </section>
+        <section id="desafio" class="section-padding"><div class="container"><div class="row align-items-center"><div class="col-lg-6"><h2 class="mb-4">O Desafio Dual de Florianópolis</h2><p class="lead">Nossa cidade enfrenta dois desafios que parecem separados, mas estão profundamente conectados:</p><div class="d-flex mb-3"><i class="bi bi-house-door-fill fs-2 me-3 text-danger"></i><div><h5>A Crise de Moradia</h5><p>O déficit habitacional afeta milhares de pessoas. A autoconstrução de moradias precárias é, muitas vezes, a única solução.</p></div></div><div class="d-flex"><i class="bi bi-bricks fs-2 me-3" style="color: var(--cor-areia);"></i><div><h5>O Desafio dos Resíduos (RCC)</h5><p>Obras, demolições e o mercado imobiliário geram um volume massivo de resíduos. Gerir este material tem um custo alto — financeiro, logístico e ambiental.</p></div></div></div><div class="col-lg-6 text-center d-none d-lg-block"><img src="https://images.unsplash.com/photo-1604145450391-9a2c39a55745?q=80&w=1887&auto=format&fit=crop" class="img-fluid rounded-3 shadow" alt="Resíduos de construção civil"></div></div></div></section>
+        <section id="solucao" class="section-padding bg-light"><div class="container text-center"><h2 class="mb-3">Uma Plataforma, Dois Caminhos para o Impacto.</h2><p class="lead mb-5 mx-auto" style="max-width: 800px;">O R+Cidades opera com um modelo híbrido e flexível para maximizar a reutilização de materiais e o alcance social.</p><div class="row g-4"><div class="col-md-6"><div class="p-4 bg-white rounded-3 shadow-sm h-100"><i class="bi bi-arrows-exchange fs-1 mb-3" style="color:var(--cor-primaria)"></i><h4>Doação Direta (Marketplace P2P)</h4><p>Construtoras e cidadãos anunciam materiais diretamente de suas obras. Ideal para grandes volumes, onde o doador aprova quem recebe, agilizando o processo.</p></div></div><div class="col-md-6"><div class="p-4 bg-white rounded-3 shadow-sm h-100"><i class="bi bi-box-seam-fill fs-1 mb-3" style="color:var(--cor-secundaria)"></i><h4>Banco de Materiais (Hub Central)</h4><p>Doadores com pequenas sobras enviam para um ponto central. A plataforma gerencia o estoque, garantindo acesso justo para beneficiários validados.</p></div></div></div></div></section>
+        
+        <!-- NOVA SEÇÃO: O Match na Prática -->
+        <section id="match-visual" class="section-padding">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="mb-3">O Ecossistema em Ação: O 'Match' na Prática</h2>
+                    <p class="lead mx-auto" style="max-width: 800px;">Nossa tecnologia conecta as duas pontas da cadeia em um fluxo simples, transparente e focado na confiança.</p>
+                </div>
+                <div class="row g-4 text-center match-flow-container">
+                    <!-- Passo 1 -->
+                    <div class="col-md-3">
+                        <div class="match-step">
+                            <div class="match-icon-wrapper">
+                                <i class="bi bi-cloud-upload-fill"></i>
+                            </div>
+                            <h5>1. Doador Anuncia</h5>
+                            <p class="small">Uma construtora ou cidadão cadastra um material sobrando em nossa plataforma.</p>
+                        </div>
+                    </div>
+                    <!-- Passo 2 -->
+                    <div class="col-md-3">
+                        <div class="match-step">
+                             <div class="match-icon-wrapper">
+                                <i class="bi bi-hand-index-thumb-fill"></i>
+                            </div>
+                            <h5>2. Beneficiário Solicita</h5>
+                            <p class="small">Uma família validada encontra o item que precisa no catálogo e faz a solicitação.</p>
+                        </div>
+                    </div>
+                    <!-- Passo 3 -->
+                    <div class="col-md-3">
+                        <div class="match-step">
+                            <div class="match-icon-wrapper">
+                                <i class="bi bi-bell-fill"></i>
+                            </div>
+                            <h5>3. Doador Aprova</h5>
+                            <p class="small">O doador recebe uma notificação e aprova o 'match', confirmando a doação.</p>
+                        </div>
+                    </div>
+                    <!-- Passo 4 -->
+                    <div class="col-md-3">
+                        <div class="match-step">
+                            <div class="match-icon-wrapper">
+                               <i class="bi bi-truck"></i>
+                            </div>
+                            <h5>4. Logística Conecta</h5>
+                            <p class="small">A plataforma facilita o agendamento da coleta e entrega, completando o ciclo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="personas" class="section-padding bg-light"><div class="container"><div class="text-center mb-5"><h2 class="mb-3">Uma Solução para Cada Ponto da Cadeia</h2><p class="lead mx-auto" style="max-width: 700px;">Desenhamos a plataforma para atender às necessidades de cada parceiro no ecossistema da construção civil.</p></div><div class="row g-4"><div class="col-md-6 col-lg-3"><div class="persona-card text-center"><i class="bi bi-building-fill-gear icon"></i><h5 class="mt-3 mb-2">Construtoras (ESG)</h5><p class="small">Transforme custo em ativo social. Gere métricas para relatórios ESG e alinhe sua marca aos ODS da ONU.</p></div></div><div class="col-md-6 col-lg-3"><div class="persona-card text-center"><i class="bi bi-shield-fill-check icon"></i><h5 class="mt-3 mb-2">Setor Público (Cívico)</h5><p class="small">Uma ferramenta de tecnologia para sua política habitacional, otimizando a gestão de resíduos e validando beneficiários.</p></div></div><div class="col-md-6 col-lg-3"><div class="persona-card text-center"><i class="bi bi-tools icon"></i><h5 class="mt-3 mb-2">PMEs e Cidadãos</h5><p class="small">Descarte sobras de reforma de forma gratuita e fácil. Evite o custo de caçambas e dê um destino correto ao seu material.</p></div></div><div class="col-md-6 col-lg-3"><div class="persona-card text-center"><i class="bi bi-people-fill icon"></i><h5 class="mt-3 mb-2">Famílias e Cooperativas</h5><p class="small">Acesso digno e gratuito a materiais essenciais para a reforma, autoconstrução ou melhoria da sua moradia.</p></div></div></div></div></section>
+        <section class="section-padding text-center" style="background-color: var(--cor-primaria); color: white;"><div class="container"><h2 class="mb-4">Junte-se à Construção de um Futuro Mais Justo e Sustentável.</h2><button class="btn btn-destaque" onclick="profileSelectionModal.show()">Comece a explorar agora</button></div></section>
+    </main>
+
+    <!-- =================================== -->
+    <!--      CONTEÚDO DO PROTÓTIPO (APP)    -->
+    <!-- =================================== -->
+    <main id="app-content" class="d-none">
+        <!-- VISÃO: Catálogo (Beneficiário) -->
+        <div id="view-catalogo" class="container my-5 app-view">
+            <h2 class="mb-4">Catálogo de Materiais</h2>
+            <div class="card card-body mb-4">
+                <div class="row g-3 align-items-center">
+                    <div class="col-lg-6">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Busque por 'janela', 'piso', 'tijolo'...">
+                    </div>
+                    <div class="col-lg-3">
+                         <select id="categoryFilter" class="form-select">
+                            <option value="">Todas as categorias</option>
+                            <option>Portas e Janelas</option>
+                            <option>Pisos e Revestimentos</option>
+                            <option>Metais e Louças</option>
+                            <option>Elétrica</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <select id="typeFilter" class="form-select">
+                            <option value="">Todos os locais</option>
+                            <option value="p2p">Doação Direta (P2P)</option>
+                            <option value="banco">Banco de Materiais</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="catalogo-grid" class="row g-4"></div>
+        </div>
+
+        <!-- VISÃO: Minhas Solicitações (Beneficiário) -->
+        <div id="view-minhas-solicitacoes" class="container my-5 app-view">
+            <h2 class="mb-4">Minhas Solicitações</h2>
+            <div id="solicitacoes-list"></div>
+        </div>
+
+        <!-- VISÃO: Meus Anúncios (Doador) -->
+        <div id="view-meus-anuncios" class="container my-5 app-view">
+            <h2 class="mb-4">Meus Anúncios</h2>
+            <div id="meus-anuncios-list"></div>
+        </div>
+        
+        <!-- VISÃO: Formulário de Doação (Doador) -->
+        <div id="view-anunciar-material" class="container my-5 app-view">
+            <h2 class="mb-4">Anunciar Novo Material</h2>
+             <div class="card card-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Título do Anúncio</label>
+                        <input type="text" class="form-control" placeholder="Ex: Janela de Alumínio 2 Folhas">
+                    </div>
+                     <div class="row mb-3">
+                        <div class="col-md-6"><label class="form-label">Categoria</label><select class="form-select"><option>Portas e Janelas</option></select></div>
+                        <div class="col-md-6"><label class="form-label">Condição</label><select class="form-select"><option>Novo</option><option>Usado - Bom</option><option>Requer Reparo</option></select></div>
+                    </div>
+                    <div class="mb-3">
+                         <label class="form-label">Fotos do Material</label>
+                         <input type="file" class="form-control">
+                    </div>
+                    <button type="button" class="btn btn-destaque" onclick="alert('Simulação: Anúncio publicado com sucesso!'); showAppView('meus-anuncios');">Publicar Anúncio</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- VISÃO: Dashboard de Impacto (Doador) -->
+        <div id="view-dashboard" class="container my-5 app-view">
+            <h2 class="mb-4">Seu Dashboard de Impacto</h2>
+            <div class="row g-4 mb-4">
+                <div class="col-md-4"><div class="metric-card"><div class="icon mb-2"><i class="bi bi-bricks"></i></div><h5>Material Doado</h5><div class="metric-value">1.2 T</div></div></div>
+                <div class="col-md-4"><div class="metric-card"><div class="icon mb-2"><i class="bi bi-people-fill"></i></div><h5>Famílias Ajudadas</h5><div class="metric-value">7</div></div></div>
+                <div class="col-md-4"><div class="metric-card"><div class="icon mb-2"><i class="bi bi-tree-fill"></i></div><h5>CO₂ Evitado (est.)</h5><div class="metric-value">450 kg</div></div></div>
+            </div>
+            <div class="card card-body">
+                <h4 class="mb-3">Doações por Mês</h4>
+                <canvas id="impactChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- =================================== -->
+    <!--      MODAIS                         -->
+    <!-- =================================== -->
+    <div class="modal fade" id="profile-selection-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0"><h5 class="modal-title">Simular Experiência Como:</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card card-profile p-4" onclick="loginAs('beneficiario')">
+                                <i class="bi bi-house-heart-fill fs-1 mb-2" style="color:var(--cor-secundaria)"></i>
+                                <h5>Beneficiário</h5>
+                                <p class="small text-muted">Buscar e solicitar materiais.</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card card-profile p-4" onclick="loginAs('doador')">
+                                <i class="bi bi-building-fill-add fs-1 mb-2" style="color:var(--cor-primaria)"></i>
+                                <h5>Doador (PJ)</h5>
+                                <p class="small text-muted">Anunciar, gerenciar e ver impacto.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detalheMaterialModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><div class="modal-header border-0"><h5 class="modal-title" id="modal-titulo"></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"></div><div class="modal-footer border-0"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button><button type="button" class="btn btn-destaque" id="btn-confirmar-solicitacao" onclick="handleSolicitarClick(this)"><i class="bi bi-check-circle-fill me-2"></i>Solicitar Material</button></div></div></div></div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript do Protótipo -->
+    <script>
+        // --- ELEMENTOS DO DOM ---
+        const landingPageContent = document.getElementById('landing-page-content');
+        const appContent = document.getElementById('app-content');
+        const navLandingLinks = document.getElementById('nav-landing-links');
+        const navAppLinks = document.getElementById('nav-app-links');
+        const navAppActions = document.getElementById('nav-app-actions');
+        const detalheModal = new bootstrap.Modal(document.getElementById('detalheMaterialModal'));
+        const profileSelectionModal = new bootstrap.Modal(document.getElementById('profile-selection-modal'));
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const typeFilter = document.getElementById('typeFilter');
+
+        // --- DADOS MOCKADOS ---
+        const anuncios = [{ id: 101, titulo: "Janela de Alumínio 2 Folhas", categoria:"Portas e Janelas", descricao: "Janela em bom estado, retirada de reforma. Sem vidros. Medidas 1.20m x 1.00m.", condicao: "Usado - Bom", quantidade: "2", unidade: "unidades", doador: "Júlio (Doador ESG)", doadorId: 2, local: "Rua das Algas, 123 - Jurerê", tipo: "p2p", imagem: "https://images.unsplash.com/photo-1599488846439-84384b36b85d?q=80&w=400&h=250&auto=format&fit=crop" }, { id: 102, titulo: "Caixas de Piso Cerâmico", categoria:"Pisos e Revestimentos", descricao: "Sobra de obra de construtora. Piso cerâmico bege, 45x45cm. Material novo.", condicao: "Novo", quantidade: "15.5", unidade: "m²", doador: "Sérgio (PME)", doadorId: 2, local: "Av. Madre Benvenuta, 2000", tipo: "banco", imagem: "https://images.unsplash.com/photo-1581362524794-e53f56304443?q=80&w=400&h=250&auto=format&fit=crop" }, { id: 103, titulo: "Pia de Cozinha Inox", categoria:"Metais e Louças", descricao: "Pia de 1.50m com cuba central. Possui um pequeno amassado no canto direito, fácil de consertar.", condicao: "Requer Reparo", quantidade: "1", unidade: "unidade", doador: "Maria (Doadora PF)", doadorId: 3, local: "Rua Santos Saraiva, 550 - Capoeiras", tipo: "p2p", imagem: "https://images.unsplash.com/photo-1601121141396-d4138711e2f9?q=80&w=400&h=250&auto=format&fit=crop" }, { id: 104, titulo: "Tijolos de Demolição", categoria:"Alvenaria", descricao: "Aproximadamente 200 tijolos maciços de demolição, limpos e prontos para reuso. Ótimos para decoração.", condicao: "Usado - Bom", quantidade: "200", unidade: "unidades", doador: "Construtora Alfa", doadorId: 2, local: "Rodovia SC-401, Saco Grande", tipo: "p2p", imagem: "https://images.unsplash.com/photo-1559407986-b64161f52554?q=80&w=400&h=250&auto=format&fit=crop" }, { id: 105, titulo: "Saco de Argamassa", categoria:"Alvenaria", descricao: "Saco de 20kg de argamassa AC-II fechado, sobrou de uma pequena reforma. Validade OK.", condicao: "Novo", quantidade: "1", unidade: "saco", doador: "Carlos (Cidadão)", doadorId: 4, local: "Av. Madre Benvenuta, 2000", tipo: "banco", imagem: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=400&h=250&auto=format&fit=crop" }];
+        let minhasSolicitacoes = [];
+        let solicitacoesParaMeusAnuncios = [{id: 1, anuncioId: 101, beneficiario: "Ana Silva", justificativa: "Para a janela do quarto das crianças.", status: "Pendente"}, {id: 2, anuncioId: 102, beneficiario: "Carlos Souza", justificativa: "Reforma do piso da cozinha.", status: "Pendente"}];
+        let currentUserType = null;
+        let impactChart = null;
+
+        // --- FUNÇÕES DE RENDERIZAÇÃO ---
+        function renderCatalogo() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const categoryTerm = categoryFilter.value;
+            const typeTerm = typeFilter.value;
+
+            const filteredAnuncios = anuncios.filter(anuncio => {
+                const matchesSearch = anuncio.titulo.toLowerCase().includes(searchTerm) || anuncio.descricao.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryTerm || anuncio.categoria === categoryTerm;
+                const matchesType = !typeTerm || anuncio.tipo === typeTerm;
+                return matchesSearch && matchesCategory && matchesType;
+            });
+
+            const catalogoGrid = document.getElementById('catalogo-grid');
+            catalogoGrid.innerHTML = '';
+            if(filteredAnuncios.length === 0) {
+                 catalogoGrid.innerHTML = `<div class="col-12"><div class="alert alert-warning">Nenhum material encontrado com os filtros selecionados.</div></div>`;
+                 return;
+            }
+            filteredAnuncios.forEach(anuncio => {
+                const localBadge = anuncio.tipo === 'p2p' ? `<span class="badge rounded-pill badge-local-p2p"><i class="bi bi-geo-alt-fill me-1"></i>Doação Direta</span>` : `<span class="badge rounded-pill badge-local-banco"><i class="bi bi-box-seam-fill me-1"></i>Banco de Materiais</span>`;
+                catalogoGrid.innerHTML += `<div class="col-md-6 col-lg-4"><div class="card h-100 material-card shadow-sm" onclick="openDetalheModal(${anuncio.id})"><img src="${anuncio.imagem}" class="card-img-top" alt="${anuncio.titulo}" style="height: 200px; object-fit: cover;"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><h5 class="card-title mb-2">${anuncio.titulo}</h5>${localBadge}</div><p class="card-text small text-muted">${anuncio.descricao.substring(0, 70)}...</p></div><div class="card-footer bg-white border-0 pb-3 d-flex justify-content-between align-items-center"><span class="fw-bold" style="color: var(--cor-primaria);">${anuncio.condicao}</span><span class="text-muted small">${anuncio.quantidade} ${anuncio.unidade}</span></div></div></div>`;
+            });
+        }
+        
+        function renderMeusAnuncios() {
+            const meusAnunciosList = document.getElementById('meus-anuncios-list');
+            meusAnunciosList.innerHTML = '';
+            const meusAnuncios = anuncios.filter(a => a.doadorId === 2); // Simula o doador logado
+            meusAnuncios.forEach(anuncio => {
+                const solicitacoes = solicitacoesParaMeusAnuncios.filter(s => s.anuncioId === anuncio.id && s.status === 'Pendente');
+                let solicitacoesHtml = '<p class="text-muted"><em>Nenhuma nova solicitação para este item.</em></p>';
+                if(solicitacoes.length > 0){
+                    solicitacoesHtml = solicitacoes.map(s => `
+                        <div class="border rounded p-3 mb-2">
+                            <p><strong>${s.beneficiario}</strong> solicitou este item.</p>
+                            <p class="small fst-italic">"${s.justificativa}"</p>
+                            <div>
+                                <button class="btn btn-sm btn-success" onclick="handleAprovacao(${s.id}, true)">Aprovar</button>
+                                <button class="btn btn-sm btn-danger" onclick="handleAprovacao(${s.id}, false)">Rejeitar</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                meusAnunciosList.innerHTML += `<div class="card mb-4"><div class="card-header"><h5>${anuncio.titulo}</h5></div><div class="card-body bg-light"><h6 class="mb-3">Solicitações Pendentes:</h6>${solicitacoesHtml}</div></div>`;
+            });
+        }
+        
+        function renderDashboard() {
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            if(impactChart) { impactChart.destroy(); }
+            impactChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                    datasets: [{
+                        label: 'Nº de Doações',
+                        data: [5, 9, 3, 5, 2, 3],
+                        backgroundColor: 'var(--cor-secundaria)',
+                        borderColor: 'var(--cor-primaria)',
+                        borderWidth: 1
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true } } }
+            });
+        }
+        
+        function renderMinhasSolicitacoes() {
+            const solicitacoesList = document.getElementById('solicitacoes-list');
+            solicitacoesList.innerHTML = '';
+            if (minhasSolicitacoes.length === 0) {
+                solicitacoesList.innerHTML = `<div class="alert alert-info">Você ainda não fez nenhuma solicitação.</div>`;
+                return;
+            }
+            minhasSolicitacoes.forEach(solicitacao => {
+                const statusClass = `status-${solicitacao.status.toLowerCase()}`;
+                solicitacoesList.innerHTML += `<div class="card mb-3"><div class="card-body"><div class="row align-items-center"><div class="col-md-2 d-none d-md-block"><img src="${solicitacao.imagem}" class="img-fluid rounded" alt="${solicitacao.titulo}"></div><div class="col-md-6"><h5 class="mb-1">${solicitacao.titulo}</h5><p class="text-muted small mb-0">Solicitado de: ${solicitacao.doador}</p></div><div class="col-md-4 text-md-end mt-2 mt-md-0"><span class="status-solicitacao ${statusClass} fs-5 text-uppercase">${solicitacao.status}</span></div></div></div></div>`;
+            });
+        }
+        
+        // --- FUNÇÕES DE INTERAÇÃO ---
+        function openDetalheModal(anuncioId) { /* ... */ } // Lógica mantida da v2.0
+        function handleSolicitarClick(button) { /* ... */ } // Lógica mantida da v2.0
+        
+        function handleAprovacao(solicitacaoId, aprovado) {
+            const solicitacao = solicitacoesParaMeusAnuncios.find(s => s.id === solicitacaoId);
+            if(solicitacao) {
+                solicitacao.status = aprovado ? 'Aprovado' : 'Rejeitado';
+                alert(`Solicitação de ${solicitacao.beneficiario} foi ${aprovado ? 'APROVADA' : 'REJEITADA'}.`);
+                renderMeusAnuncios();
+            }
+        }
+
+        // --- CONTROLE DE NAVEGAÇÃO ---
+        function showLandingPage() {
+            currentUserType = null;
+            landingPageContent.classList.remove('d-none');
+            appContent.classList.add('d-none');
+            navLandingLinks.classList.remove('d-none');
+            navAppLinks.classList.add('d-none');
+            navAppActions.classList.add('d-none');
+            document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
+        }
+
+        function loginAs(userType) {
+            currentUserType = userType;
+            profileSelectionModal.hide();
+            landingPageContent.classList.add('d-none');
+            appContent.classList.remove('d-none');
+            navLandingLinks.classList.add('d-none');
+            navAppLinks.classList.remove('d-none');
+            navAppActions.classList.remove('d-none');
+
+            document.getElementById('nav-beneficiario').classList.toggle('d-none', userType !== 'beneficiario');
+            document.getElementById('nav-doador').classList.toggle('d-none', userType !== 'doador');
+            document.getElementById('btn-anunciar-material').classList.toggle('d-none', userType !== 'doador');
+
+            if (userType === 'beneficiario') {
+                showAppView('catalogo');
+            } else if (userType === 'doador') {
+                showAppView('meus-anuncios');
+            }
+        }
+
+        function showAppView(viewName) {
+            document.querySelectorAll('.app-view').forEach(view => view.classList.add('d-none'));
+            document.querySelectorAll('#nav-app-links .nav-link').forEach(link => link.classList.remove('active'));
+            
+            const viewToShow = document.getElementById(`view-${viewName}`);
+            const linkToActivate = document.querySelector(`#nav-app-links a[onclick*="'${viewName}'"]`);
+            
+            if (viewToShow) viewToShow.classList.remove('d-none');
+            if (linkToActivate) linkToActivate.classList.add('active');
+
+            // Renderiza o conteúdo específico da view
+            if(viewName === 'catalogo') renderCatalogo();
+            if(viewName === 'minhas-solicitacoes') renderMinhasSolicitacoes();
+            if(viewName === 'meus-anuncios') renderMeusAnuncios();
+            if(viewName === 'dashboard') renderDashboard();
+        }
+        
+        // --- INICIALIZAÇÃO ---
+        searchInput.addEventListener('keyup', renderCatalogo);
+        categoryFilter.addEventListener('change', renderCatalogo);
+        typeFilter.addEventListener('change', renderCatalogo);
+        
+        // Funções omitidas da v2.0 (openDetalheModal, handleSolicitarClick) são mantidas para brevidade,
+        // mas com a lógica interna funcionando como antes.
+        function openDetalheModal(anuncioId){const anuncio=anuncios.find(a=>a.id===anuncioId);const modalBody=detalheModal._element.querySelector(".modal-body");const btnConfirmar=document.getElementById("btn-confirmar-solicitacao");document.getElementById("modal-titulo").textContent=anuncio.titulo;modalBody.innerHTML=`<div class="row"><div class="col-md-6"><img src="${anuncio.imagem.replace("400&h=250","800&h=600")}" class="img-fluid rounded mb-3" alt="${anuncio.titulo}"></div><div class="col-md-6"><h4>Descrição Completa</h4><p>${anuncio.descricao}</p><ul class="list-group list-group-flush"><li class="list-group-item ps-0"><strong>Condição:</strong> ${anuncio.condicao}</li><li class="list-group-item ps-0"><strong>Quantidade:</strong> ${anuncio.quantidade} ${anuncio.unidade}</li><li class="list-group-item ps-0"><strong>Doador:</strong> ${anuncio.doador}</li><li class="list-group-item ps-0"><strong>Endereço de Retirada:</strong> ${anuncio.local}</li></ul></div></div><hr class="my-4"><div class="mb-3"><label for="justificativa" class="form-label"><strong>Justificativa da Solicitação</strong> (Para o Doador)</label><textarea class="form-control" id="justificativa" rows="3" placeholder="Ex: 'Preciso deste material para a reforma da área de serviço da minha casa...'"></textarea></div>`;btnConfirmar.setAttribute("data-anuncio-id",anuncio.id);detalheModal.show()}
+        function handleSolicitarClick(button){const anuncioId=parseInt(button.getAttribute("data-anuncio-id"));const justificativa=document.getElementById("justificativa").value;if(justificativa.trim()===""){alert("Por favor, preencha a justificativa antes de solicitar.");return}const anuncioSolicitado=anuncios.find(a=>a.id===anuncioId);minhasSolicitacoes.unshift({...anuncioSolicitado,status:"Pendente"});detalheModal.hide();alert(`Solicitação para "${anuncioSolicitado.titulo}" enviada com sucesso!`);showAppView("minhas-solicitacoes")}
+
+    </script>
+</body>
+</html>
+
