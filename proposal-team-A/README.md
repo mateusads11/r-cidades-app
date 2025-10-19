@@ -19,11 +19,8 @@ Essa dualidade permite que beneficiários validados solicitem materiais tanto de
 
 Para visualizar como essa estrutura se traduz em uma experiência de usuário funcional e intuitiva, criamos um protótipo navegável que demonstra os fluxos principais para Doadores e Beneficiários.
 
-<<<<<<< HEAD
-* **[Clique aqui para interagir com o Protótipo Navegável da Equipe A](https://mateusads11.github.io/r-cidades-app/proposal-team-A/index.html)** 
-=======
 * **[Clique aqui para interagir com o Protótipo Navegável da Equipe A](https://mateusads11.github.io/r-cidades-app/proposal-team-A/index.html)**
->>>>>>> 21bf3a439bc0a7dd8b4e23efffe82c9661658ec4
+
 
 O protótipo foca nas funcionalidades essenciais do MVP (Produto Mínimo Viável) e aplica os princípios de design (Confiança, Simplicidade, UX Circular) definidos na pesquisa.
 
