@@ -1,6 +1,6 @@
 ### **Plano de Ação: Fundações de Produto e UX (R+Cidades)**
 
-O seu objetivo é criar o **blueprint** (a planta de engenharia) do aplicativo. O Squad de UI vai usar isso para "pintar" a casa.
+**blueprint** (a planta de engenharia) do aplicativo. 
 
 #### **Fase 1: Definição do Usuário (Quem estamos ajudando?)**
 
@@ -47,7 +47,7 @@ Agora que sabemos *quem* é o usuário, vamos organizar o app para ele.
 
 #### **Fase 3: Esboço (O que tem em cada tela?)**
 
-Este é o **Wireframe de Baixa Fidelidade** que você corretamente mencionou.
+Este é o **Wireframe de Baixa Fidelidade** 
 
 * **Ação 4: Desenhar os Wireframes (O "Esqueleto")**
     * **O que é:** Um desenho *sem cores, sem fontes bonitas, sem imagens*. Apenas caixas, linhas e texto-padrão ("Lorem Ipsum" ou "Título da Página").
@@ -57,17 +57,11 @@ Este é o **Wireframe de Baixa Fidelidade** que você corretamente mencionou.
 
 ---
 
-### **Seu Próximo Passo Imediato (Para começar HOJE)**
+### **Próximo Passo**
 
-1.  Vá até o seu GitHub, na aba "Projects".
-2.  Mova o cartão **"Criar protótipo visual de alta fidelidade"** para o final da fila (ou para uma coluna "Backlog", se tiver).
-3.  Crie as seguintes Issues e coloque-as na coluna **"A Fazer"**:
+1.  **Criar as seguintes Issues e colocá-las na coluna**"A Fazer"**:
     * `[UX] Definir Personas de Usuários (Doador e Beneficiário)`
     * `[UX] Mapear a Jornada do Usuário Doador`
     * `[UX] Desenhar o Fluxograma de Navegação do App (v1)`
     * `[UX] Criar Wireframes de Baixa Fidelidade (Fluxo de Doação)`
-4.  Pegue a primeira issue (`[UX] Definir Personas...`), **atribua a si mesmo**, e comece a escrever o rascunho da Persona (como o "Carlos" que eu citei).
 
-Ao fazer isso, você começa o trabalho pelo alicerce, foca 100% em Produto/UX, não depende de um hardware potente e cria os artefatos perfeitos para entregar para o Squad de UI quando eles estiverem prontos.
-
-O que acha deste plano? Posso te ajudar a detalhar a Persona do Doador para começar?
