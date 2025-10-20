@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframes Completos - R+Cidades</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .canvas-container {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            overflow-x: auto;
+            padding: 2rem;
+        }
+        canvas {
+            background-color: #f9fafb; /* gray-50 */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Wireframes Completos do Aplicativo (v2)</h1>
+        <p class="text-gray-600 mb-8">Base de telas redefinida com navegação unificada e fluxos de usuário organizados.</p>
+        
+        <div class="canvas-container">
+            <canvas id="wireframeCanvas" width="2000" height="3600"></canvas>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const canvas = document.getElementById('wireframeCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const colors = {
+                stroke: '#cbd5e1', // gray-300
+                fill: '#e2e8f0',   // gray-200
+                text: '#475569',   // gray-600
+                darkText: '#1e293b', // gray-800
+                button: '#a3a3a3', // neutral-400
+                primaryButton: '#3b82f6', // blue-500
+                greenButton: '#16a34a', // green-600
+                redButton: '#ef4444' // red-500
+            };
+
+            // --- Funções de Desenho ---
+            function drawPhone(x, y, w, h, title) {
+                ctx.strokeStyle = '#9ca3af'; // gray-400
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.roundRect(x, y, w, h, 20);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#9ca3af';
+                ctx.fillRect(x + w/2 - 40, y, 80, 5); // Notch
+
+                ctx.fillStyle = colors.darkText;
+                ctx.font = 'bold 16px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(title, x + w / 2, y + 45);
+            }
+
+            function drawRect(x, y, w, h, color = colors.fill, stroke = true) {
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, w, h);
+                if (stroke) {
+                    ctx.strokeStyle = colors.stroke;
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(x, y, w, h);
+                }
+            }
+
+            function drawText(text, x, y, size = 12, color = colors.text, align = 'left', weight = 'normal') {
+                ctx.fillStyle = color;
+                ctx.font = `${weight} ${size}px Inter`;
+                ctx.textAlign = align;
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, x, y);
+            }
+
+            function drawImagePlaceholder(x, y, w, h) {
+                drawRect(x, y, w, h);
+                ctx.strokeStyle = colors.stroke;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + w, y + h);
+                ctx.moveTo(x + w, y);
+                ctx.lineTo(x, y + h);
+                ctx.stroke();
+            }
+
+            function drawButton(text, x, y, w, h, color = colors.button) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.roundRect(x, y, w, h, 8);
+                ctx.fill();
+                drawText(text, x + w / 2, y + h / 2, 14, '#ffffff', 'center', '600');
+            }
+
+            function drawIcon(pathData, x, y, color = colors.darkText, size = 24) {
+                 const scale = size / 24;
+                const path = new Path2D(pathData);
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.scale(scale, scale);
+                ctx.fillStyle = color;
+                ctx.fill(path);
+                ctx.restore();
+            }
+
+            function drawBottomNavBar(x, y, w, h, active) {
+                const navH = 70;
+                const navY = y + h - navH;
+                drawRect(x, navY, w, navH, '#ffffff', false);
+                ctx.strokeStyle = colors.stroke;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x, navY);
+                ctx.lineTo(x + w, navY);
+                ctx.stroke();
+
+                const items = ['Home', 'Catálogo', 'Doar', 'Atividades', 'Perfil'];
+                const icons = [
+                    "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z", // Home
+                    "M15.5 14h-.79l-.28-.27A6.5 6.5 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z", // Search
+                    "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z", // Add Circle
+                    "M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-14h2v5h-2zm0 6h2v2h-2z", // List/Activities
+                    "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" // Profile
+                ];
+
+                const itemWidth = w / items.length;
+                items.forEach((item, i) => {
+                    const isActive = item === active;
+                    const itemX = x + i * itemWidth + itemWidth / 2;
+                    let iconColor = isActive ? colors.primaryButton : colors.text;
+                    let textColor = isActive ? colors.primaryButton : colors.text;
+                    
+                    if(item === 'Doar'){
+                        drawButton('', itemX - 25, navY - 15, 50, 50, colors.greenButton);
+                        drawIcon("M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z", itemX-12, navY - 15 + 13, '#ffffff');
+                    } else {
+                        drawIcon(icons[i], itemX - 12, navY + 15, iconColor);
+                        drawText(item, itemX, navY + 45, 10, textColor, 'center', isActive ? '600' : 'normal');
+                    }
+                });
+            }
+            
+            // --- Definições de Layout ---
+            const phoneW = 360;
+            const phoneH = 780;
+            const margin = 40;
+            const hGap = phoneW + margin;
+            const vGap = phoneH + margin + 80;
+
+            // --- FLUXO DE AUTENTICAÇÃO ---
+            let screenX = margin;
+            let screenY = margin;
+            drawText('FLUXO DE AUTENTICAÇÃO', screenX, screenY -10, 16, colors.darkText, 'left', 'bold');
+            
+            // TELA 1.1: LOGIN
+            drawPhone(screenX, screenY, phoneW, phoneH, '1. Login / Cadastro');
+            let currentX = screenX + 20;
+            let currentY = screenY + 150;
+            drawText('Bem-vindo ao R+Cidades', screenX + phoneW/2, currentY, 24, colors.darkText, 'center', 'bold');
+            currentY += 80;
+            drawText('Email ou Documento', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 20, phoneW - 40, 45, '#ffffff');
+            currentY += 75;
+            drawText('Senha', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 20, phoneW - 40, 45, '#ffffff');
+            drawText('Esqueceu a senha?', screenX + phoneW - 20, currentY + 80, 12, colors.primaryButton, 'right');
+            currentY += 120;
+            drawButton('Entrar', currentX, currentY, phoneW - 40, 50, colors.primaryButton);
+            drawText('Não tem uma conta?', screenX + phoneW/2 - 50, currentY + 70, 14, colors.text, 'center');
+            drawText('Cadastre-se', screenX + phoneW/2 + 40, currentY + 70, 14, colors.primaryButton, 'center', 'bold');
+
+            // TELA 1.2: ESCOLHA DE PERFIL (CADASTRO)
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '2. Cadastro: Escolha seu Perfil');
+            currentX = screenX + 20;
+            currentY = screenY + 150;
+            drawText('Como você quer participar?', screenX + phoneW/2, currentY, 22, colors.darkText, 'center', 'bold');
+            currentY += 60;
+            drawRect(currentX, currentY, phoneW - 40, 100, '#ffffff');
+            drawText('Quero DOAR material', currentX + 20, currentY + 40, 18, colors.darkText, 'left', 'bold');
+            drawText('Para empresas ou cidadãos.', currentX + 20, currentY + 70, 14, colors.text, 'left');
+            currentY += 120;
+            drawRect(currentX, currentY, phoneW - 40, 100, '#ffffff');
+            drawText('Preciso de material (BENEFICIÁRIO)', currentX + 20, currentY + 40, 16, colors.darkText, 'left', 'bold');
+            drawText('Acesso via validação de parceiros.', currentX + 20, currentY + 70, 14, colors.text, 'left');
+
+            // --- FLUXO DO BENEFICIÁRIO ---
+            screenX = margin;
+            screenY += vGap;
+            drawText('FLUXO DO BENEFICIÁRIO', screenX, screenY -10, 16, colors.darkText, 'left', 'bold');
+            
+            // TELA 2.1: HOME BENEFICIÁRIO
+            drawPhone(screenX, screenY, phoneW, phoneH, '3. Home (Beneficiário)');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawText('Olá, Ana!', currentX, currentY, 24, colors.darkText, 'left', 'bold');
+            currentY += 50;
+            drawRect(currentX, currentY, phoneW - 40, 45, '#ffffff');
+            drawText('Buscar por material (ex: tijolos)', currentX + 15, currentY + 23, 14, colors.text);
+            currentY += 70;
+            drawText('CATEGORIAS', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 15, 95, 80); drawText('Estrutura', currentX + 47.5, currentY + 55, 12, colors.darkText, 'center');
+            drawRect(currentX + 105, currentY + 15, 95, 80); drawText('Acabamento', currentX + 152.5, currentY + 55, 12, colors.darkText, 'center');
+            drawRect(currentX + 210, currentY + 15, 95, 80); drawText('Hidráulica', currentX + 257.5, currentY + 55, 12, colors.darkText, 'center');
+            currentY += 120;
+            drawText('ÚLTIMOS ANÚNCIOS', currentX, currentY, 12, colors.darkText, 'left', '600');
+            currentY += 20;
+            drawRect(currentX, currentY, phoneW - 40, 100, '#ffffff');
+            drawImagePlaceholder(currentX + 10, currentY + 10, 80, 80);
+            drawText('Pia de Mostruário', currentX + 105, currentY + 30, 14, colors.darkText, 'left', 'bold');
+            drawText('1 unidade | Novo', currentX + 105, currentY + 50, 12, colors.text, 'left');
+            drawText('Local: Banco Itacorubi', currentX + 105, currentY + 70, 12, colors.text, 'left');
+            drawBottomNavBar(screenX, screenY, phoneW, phoneH, 'Home');
+
+            // TELA 2.2: CATÁLOGO
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '4. Catálogo');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawRect(currentX, currentY, phoneW - 40, 45, '#ffffff');
+            drawText('Buscar...', currentX + 15, currentY + 23, 14, colors.text);
+            currentY += 60;
+            drawRect(currentX, currentY, phoneW - 40, 40, '#ffffff');
+            drawText('Filtros: Categoria v | Localização v | Condição v', currentX + 10, currentY + 20, 12, colors.darkText, 'left');
+            currentY += 55;
+            drawRect(currentX, currentY, phoneW - 40, 100, '#ffffff');
+            drawImagePlaceholder(currentX + 10, currentY + 10, 80, 80);
+            drawText('500m² de Piso Cerâmico', currentX + 105, currentY + 30, 14, colors.darkText, 'left', 'bold');
+            drawText('Local: Obra em Jurerê', currentX + 105, currentY + 70, 12, colors.text, 'left');
+            currentY += 110;
+            drawRect(currentX, currentY, phoneW - 40, 100, '#ffffff');
+            drawImagePlaceholder(currentX + 10, currentY + 10, 80, 80);
+            drawText('Pia de Mostruário', currentX + 105, currentY + 30, 14, colors.darkText, 'left', 'bold');
+            drawText('Local: Banco Itacorubi', currentX + 105, currentY + 70, 12, colors.text, 'left');
+            drawBottomNavBar(screenX, screenY, phoneW, phoneH, 'Catálogo');
+
+            // TELA 2.3: DETALHES DO ANÚNCIO
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '5. Detalhes do Anúncio');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawImagePlaceholder(currentX, currentY, phoneW - 40, 200);
+            currentY += 220;
+            drawText('500m² de Piso Cerâmico', currentX, currentY, 22, colors.darkText, 'left', 'bold');
+            drawText('Categoria: Acabamento', currentX, currentY + 30, 14, colors.text, 'left');
+            currentY += 60;
+            drawText('Condição: Usado - Bom', currentX, currentY, 14, colors.darkText, 'left', '600');
+            drawText('Local de Retirada:', currentX, currentY + 30, 14, colors.darkText, 'left', '600');
+            drawText('Obra em Jurerê Internacional', currentX, currentY + 50, 14, colors.text, 'left');
+            currentY += 80;
+            drawText('Descrição do doador:', currentX, currentY, 14, colors.darkText, 'left', '600');
+            drawText('"Sobra de reforma de alto padrão..."', currentX, currentY + 20, 14, colors.text, 'left');
+            drawButton('Solicitar este Item', currentX, phoneH + screenY - 60, phoneW - 40, 50, colors.primaryButton);
+
+             // TELA 2.4: FORMULÁRIO DE SOLICITAÇÃO
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '6. Solicitar Item');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawText('Você está solicitando:', currentX, currentY, 14, colors.darkText, 'left');
+            drawText('500m² de Piso Cerâmico', currentX, currentY + 25, 18, colors.darkText, 'left', 'bold');
+            currentY += 70;
+            drawText('Justificativa (obrigatório)', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('Explique como este material ajudará.', currentX, currentY + 20, 12, colors.text, 'left');
+            drawRect(currentX, currentY + 35, phoneW - 40, 150, '#ffffff');
+            currentY += 200;
+            drawText('Endereço de Entrega:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('Rua da Comunidade, 123', currentX, currentY + 20, 14, colors.text, 'left');
+            drawText('Alterar', screenX + phoneW - 20, currentY + 20, 14, colors.primaryButton, 'right', 'bold');
+            drawButton('Enviar Solicitação', currentX, phoneH + screenY - 60, phoneW - 40, 50, colors.greenButton);
+
+
+            // --- FLUXO DO BENEFICIÁRIO (PÓS-SOLICITAÇÃO) ---
+            screenX = margin;
+            screenY += vGap;
+            drawText('FLUXO DO BENEFICIÁRIO (PÓS-SOLICITAÇÃO)', screenX, screenY -10, 16, colors.darkText, 'left', 'bold');
+
+            // TELA 3.1: MINHAS SOLICITAÇÕES
+            drawPhone(screenX, screenY, phoneW, phoneH, '7. Minhas Solicitações');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawRect(currentX, currentY, phoneW-40, 100, '#ffffff');
+            drawImagePlaceholder(currentX + 10, currentY + 10, 80, 80);
+            drawText('500m² de Piso Cerâmico', currentX + 105, currentY + 25, 14, colors.darkText, 'left', 'bold');
+            drawText('Solicitado em: 18/10/25', currentX + 105, currentY + 45, 12, colors.text, 'left');
+            drawRect(currentX + 105, currentY + 65, 100, 25, '#dbeafe'); // Fundo azul
+            drawText('Aprovado', currentX + 115, currentY + 77, 12, '#1e40af', 'left', '600');
+            currentY += 110;
+            drawRect(currentX, currentY, phoneW-40, 100, '#ffffff');
+            drawImagePlaceholder(currentX + 10, currentY + 10, 80, 80);
+            drawText('10 Blocos de Concreto', currentX + 105, currentY + 25, 14, colors.darkText, 'left', 'bold');
+            drawRect(currentX + 105, currentY + 65, 100, 25, '#fef9c3'); // Fundo amarelo
+            drawText('Pendente', currentX + 115, currentY + 77, 12, '#ca8a04', 'left', '600');
+            drawBottomNavBar(screenX, screenY, phoneW, phoneH, 'Atividades');
+            
+            // TELA 3.2: AGENDAMENTO LOGÍSTICO
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '8. Agendamento');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawText('Entrega Agendada', currentX + (phoneW-40)/2, currentY, 20, colors.darkText, 'center', 'bold');
+            currentY += 50;
+            drawText('MATERIAL:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('500m² de Piso Cerâmico', currentX, currentY + 20, 14, colors.text, 'left', 'bold');
+            currentY += 50;
+            drawText('DATA E HORA:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('Sexta-feira, 24/10/25 - 14:00h', currentX, currentY + 20, 14, colors.text, 'left', 'bold');
+            currentY += 50;
+            drawText('STATUS:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('Coleta Agendada', currentX, currentY + 20, 14, colors.text, 'left', 'bold');
+            currentY += 50;
+            drawText('ENDEREÇO DE ENTREGA:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('Rua da Comunidade, 123', currentX, currentY + 20, 14, colors.text, 'left');
+            drawButton('Confirmar Recebimento', currentX, phoneH + screenY - 60, phoneW-40, 50, colors.button);
+
+            // --- FLUXO DO DOADOR ---
+            screenX = margin;
+            screenY += vGap;
+            drawText('FLUXO DO DOADOR', screenX, screenY -10, 16, colors.darkText, 'left', 'bold');
+            
+            // TELA 4.1: HOME DOADOR
+            drawPhone(screenX, screenY, phoneW, phoneH, '9. Home (Doador)');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawText('Olá, Júlio!', currentX, currentY, 24, colors.darkText, 'left', 'bold');
+            currentY += 70;
+            drawText('MEUS ANÚNCIOS ATIVOS', currentX, currentY, 12, colors.darkText, 'left', '600');
+            currentY += 20;
+            drawRect(currentX, currentY, phoneW - 40, 100, '#ffffff');
+            drawImagePlaceholder(currentX + 10, currentY + 10, 80, 80);
+            drawText('500m² de Piso Cerâmico', currentX + 105, currentY + 30, 14, colors.darkText, 'left', 'bold');
+            drawRect(currentX + 105, currentY + 65, 150, 20, '#fef9c3');
+            drawText('Nova solicitação pendente!', currentX + 110, currentY + 75, 11, '#ca8a04', 'left', '600');
+            drawBottomNavBar(screenX, screenY, phoneW, phoneH, 'Home');
+            
+            // TELA 4.2: CADASTRO DE ANÚNCIO
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '10. Cadastro de Anúncio');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawText('Título do Anúncio', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 10, phoneW - 40, 40, '#ffffff');
+            currentY += 60;
+            drawText('Fotos', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawImagePlaceholder(currentX, currentY + 10, 80, 80);
+            currentY += 110;
+            drawText('Categoria', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 10, phoneW - 40, 40, '#ffffff');
+            currentY += 60;
+            drawText('Local de Retirada', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 10, phoneW - 40, 40, '#ffffff');
+            drawButton('Publicar Anúncio', currentX, phoneH + screenY - 60, phoneW - 40, 45, colors.greenButton);
+
+            // TELA 4.3: GESTÃO DE ANÚNCIOS (APROVAÇÃO)
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '11. Gestão de Anúncios');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawText('Solicitação para:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('500m² de Piso Cerâmico', currentX, currentY + 20, 18, colors.darkText, 'left', 'bold');
+            currentY += 50;
+            drawText('SOLICITANTE:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawText('Ana da Silva (Beneficiária Verificada)', currentX, currentY + 20, 14, colors.text, 'left', 'bold');
+            currentY += 50;
+            drawText('JUSTIFICATIVA:', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 10, phoneW - 40, 120, '#ffffff');
+            drawText('"Preciso deste piso para reformar..."', currentX + 10, currentY + 30, 13, colors.text, 'left');
+            drawButton('Rejeitar', currentX, phoneH + screenY - 80, (phoneW - 50)/2, 45, colors.redButton);
+            drawButton('Aprovar', currentX + (phoneW-50)/2 + 10, phoneH + screenY - 80, (phoneW - 50)/2, 45, colors.greenButton);
+            drawBottomNavBar(screenX, screenY, phoneW, phoneH, 'Atividades');
+
+
+            // TELA 4.4: DASHBOARD DE IMPACTO
+            screenX += hGap;
+            drawPhone(screenX, screenY, phoneW, phoneH, '12. Dashboard de Impacto');
+            currentX = screenX + 20;
+            currentY = screenY + 80;
+            drawText('Impacto da Construtora X', currentX + (phoneW-40)/2, currentY, 18, colors.darkText, 'center', 'bold');
+            currentY += 50;
+            drawRect(currentX, currentY, phoneW-40, 100, '#ffffff');
+            drawText('TONELADAS DESVIADAS', currentX + (phoneW-40)/2, currentY + 25, 12, colors.text, 'center');
+            drawText('15.8 ton', currentX + (phoneW-40)/2, currentY + 65, 36, colors.darkText, 'center', 'bold');
+            currentY += 120;
+            drawRect(currentX, currentY, (phoneW-50)/2, 100, '#ffffff');
+            drawText('FAMÍLIAS AJUDADAS', currentX + (phoneW-50)/4, currentY + 25, 11, colors.text, 'center');
+            drawText('12', currentX + (phoneW-50)/4, currentY + 65, 36, colors.darkText, 'center', 'bold');
+            drawRect(currentX + (phoneW-50)/2 + 10, currentY, (phoneW-50)/2, 100, '#ffffff');
+            drawText('EMISSÕES EVITADAS', currentX + (phoneW-50)*0.75 + 10, currentY + 25, 11, colors.text, 'center');
+            drawText('~85 kg CO₂', currentX + (phoneW-50)*0.75 + 10, currentY + 65, 24, colors.darkText, 'center', 'bold');
+            currentY += 130;
+            drawText('SEUS SELOS', currentX, currentY, 12, colors.darkText, 'left', '600');
+            drawRect(currentX, currentY + 15, phoneW - 40, 80, '#ffffff');
+            drawText('Selo Construtor Social Ouro', currentX + 20, currentY + 55, 14, colors.darkText, 'left', 'bold');
+            drawButton('Baixar Certificado de Impacto', currentX, phoneH + screenY - 60, phoneW - 40, 50, colors.button);
+            drawBottomNavBar(screenX, screenY, phoneW, phoneH, 'Perfil');
+        }
+    </script>
+</body>
+</html>
+

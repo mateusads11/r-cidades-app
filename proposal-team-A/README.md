@@ -7,7 +7,7 @@ Esta pasta contém os artefatos e o protótipo desenvolvidos pela Equipe A para 
 A base da nossa solução é um banco de dados relacional (MySQL) projetado para ser escalável e eficiente. A estrutura principal gira em torno da tabela `anuncios`, que funciona como um catálogo unificado:
 
 * **Doação Direta (P2P):** Quando um doador (ex: grande construtora) cadastra um item diretamente de sua obra, o anúncio aponta para um endereço customizado.
-* **Banco de Materiais:** Quando a doação é destinada a um ponto central (ex: Ecoponto parceiro), o anúncio aponta para o endereço desse banco.
+* **Banco de Materiais:** Quando a doação é destinada a um ponto central (ex: Ecoponto parceiro/Banco de Materiais), o anúncio aponta para o endereço desse banco.
 
 Essa dualidade permite que beneficiários validados solicitem materiais tanto de grandes doações P2P quanto do estoque centralizado. A lógica completa, incluindo o fluxo de solicitação, aprovação e logística modular, está detalhada no schema e no guia principal do banco de dados na pasta `/docs`.
 

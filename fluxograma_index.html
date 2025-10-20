@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxograma de Navegação - R+Cidades</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        canvas {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Fluxograma de Navegação do App</h1>
+        <p class="text-gray-600 mb-6">Este é um mapa visual das telas e ações do R+Cidades. Use-o como base para desenhar no papel.</p>
+        
+        <div class="flex flex-wrap gap-4 mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 bg-blue-500 rounded-sm"></div>
+                <span class="font-medium text-sm text-gray-700">Fluxo do Beneficiário</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 bg-green-500 rounded-sm"></div>
+                <span class="font-medium text-sm text-gray-700">Fluxo do Doador</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 bg-gray-600 rounded-sm"></div>
+                <span class="font-medium text-sm text-gray-700">Telas Comuns / Iniciais</span>
+            </div>
+             <div class="flex items-center gap-2">
+                <div class="w-5 h-5 border-2 border-dashed border-yellow-500 rounded-sm"></div>
+                <span class="font-medium text-sm text-gray-700">Decisão Lógica</span>
+            </div>
+        </div>
+
+        <div class="w-full overflow-x-auto">
+            <canvas id="flowchartCanvas" width="1600" height="1200"></canvas>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const canvas = document.getElementById('flowchartCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const colors = {
+                beneficiario: '#3b82f6', // blue-500
+                doador: '#22c55e',       // green-500
+                comum: '#4b5563',        // gray-600
+                decisao: '#eab308',      // yellow-500
+                texto: '#ffffff',
+                linha: '#6b7280'        // gray-500
+            };
+            
+            // --- Funções de Desenho ---
+            function drawBox(x, y, w, h, text, color, textColor = colors.texto) {
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, w, h);
+                ctx.strokeStyle = '#1f2937';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, w, h);
+                ctx.fillStyle = textColor;
+                ctx.font = 'bold 13px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                wrapText(ctx, text, x + w / 2, y + h / 2, w - 10, 16);
+            }
+
+            function drawDiamond(x, y, w, h, text, color) {
+                const halfW = w / 2;
+                const halfH = h / 2;
+                ctx.beginPath();
+                ctx.moveTo(x + halfW, y);
+                ctx.lineTo(x + w, y + halfH);
+                ctx.lineTo(x + halfW, y + h);
+                ctx.lineTo(x, y + halfH);
+                ctx.closePath();
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 3]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#1f2937';
+                ctx.font = 'bold 12px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                wrapText(ctx, text, x + halfW, y + halfH, w - 20, 14);
+            }
+
+            function drawArrow(fromX, fromY, toX, toY, label = '', position = 'bottom', offsetX = 0, offsetY = 0) {
+                ctx.beginPath();
+                ctx.moveTo(fromX, fromY);
+                ctx.lineTo(toX, toY);
+                ctx.strokeStyle = colors.linha;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                const headlen = 10;
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+                ctx.stroke();
+
+                if (label) {
+                    ctx.fillStyle = colors.linha;
+                    ctx.font = '12px Inter';
+                    ctx.textAlign = 'center';
+                    let labelX, labelY;
+                    if(position === 'bottom') {
+                        labelX = (fromX + toX) / 2 + offsetX;
+                        labelY = (fromY + toY) / 2 + 15 + offsetY;
+                    } else if (position === 'side') {
+                        labelX = (fromX + toX) / 2 + 40 + offsetX;
+                        labelY = (fromY + toY) / 2 + offsetY;
+                    }
+                    ctx.fillText(label, labelX, labelY);
+                }
+            }
+            
+            function wrapText(context, text, x, y, maxWidth, lineHeight) {
+                const words = text.split(' ');
+                let line = '';
+                const lines = [];
+
+                for(let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = context.measureText(testLine);
+                    const testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        lines.push(line);
+                        line = words[n] + ' ';
+                    } else {
+                        line = testLine;
+                    }
+                }
+                lines.push(line);
+                
+                const startY = y - (lineHeight * (lines.length -1) / 2);
+
+                for (let i = 0; i < lines.length; i++) {
+                    context.fillText(lines[i].trim(), x, startY + (i * lineHeight));
+                }
+            }
+
+
+            // --- Definição das Posições das Caixas ---
+            const w = 160; // width
+            const h = 70;  // height
+            const hGap = 220; // horizontal gap
+            const vGap = 120; // vertical gap
+
+            // Linha 0 - Início
+            const start = { x: canvas.width / 2 - w/2, y: 30 };
+            
+            // Linha 1 - Autenticação
+            const login = { x: start.x, y: start.y + vGap };
+            const cadastro = { x: start.x - hGap, y: start.y + vGap };
+
+            // Linha 2 - Decisão
+            const tipoUser = { x: start.x, y: login.y + vGap};
+
+            // Linha 3 - Homes
+            const homeDoador = { x: tipoUser.x + hGap * 1.5, y: tipoUser.y + vGap };
+            const homeBeneficiario = { x: tipoUser.x - hGap * 1.5, y: tipoUser.y + vGap };
+
+            // Fluxo Beneficiário (Azul) - Esquerda
+            const catalogo = { x: homeBeneficiario.x, y: homeBeneficiario.y + vGap };
+            const detalhesAnuncio = { x: catalogo.x, y: catalogo.y + vGap };
+            const formSolicitacao = { x: detalhesAnuncio.x, y: detalhesAnuncio.y + vGap };
+            const confirmacaoSolicitacao = { x: formSolicitacao.x + hGap, y: formSolicitacao.y };
+
+            const listaSolicitacoes = { x: homeBeneficiario.x - hGap, y: homeBeneficiario.y + vGap };
+            const detalhesAgendamento = { x: listaSolicitacoes.x, y: listaSolicitacoes.y + vGap };
+
+            // Fluxo Doador (Verde) - Direita
+            const formAnuncio = { x: homeDoador.x, y: homeDoador.y + vGap };
+            const confirmacaoAnuncio = { x: formAnuncio.x - hGap, y: formAnuncio.y };
+
+            const listaAnuncios = { x: homeDoador.x + hGap, y: homeDoador.y + vGap };
+            const detalhesSolicitacao = { x: listaAnuncios.x, y: listaAnuncios.y + vGap };
+            const confirmacaoAprovacao = { x: detalhesSolicitacao.x - hGap, y: detalhesSolicitacao.y };
+
+            const dashboard = { x: homeDoador.x + hGap, y: homeDoador.y - vGap*0.8 };
+
+
+            // --- Desenho das Caixas ---
+            // Início e Auth
+            drawBox(start.x, start.y, w, h, 'Usuário Abre o App', colors.comum);
+            drawBox(login.x, login.y, w, h, 'Tela de Login', colors.comum);
+            drawBox(cadastro.x, cadastro.y, w, h, 'Tela de Cadastro', colors.comum);
+            drawDiamond(tipoUser.x, tipoUser.y, w, h, 'Qual o Tipo de Usuário?', colors.decisao);
+            
+            // Homes
+            drawBox(homeBeneficiario.x, homeBeneficiario.y, w, h, 'Tela Home Beneficiário', colors.beneficiario);
+            drawBox(homeDoador.x, homeDoador.y, w, h, 'Tela Home Doador', colors.doador);
+
+            // Fluxo Beneficiário
+            drawBox(catalogo.x, catalogo.y, w, h, 'Tela Catálogo de Materiais', colors.beneficiario);
+            drawBox(detalhesAnuncio.x, detalhesAnuncio.y, w, h, 'Tela Detalhes do Anúncio', colors.beneficiario);
+            drawBox(formSolicitacao.x, formSolicitacao.y, w, h, 'Tela Formulário de Solicitação', colors.beneficiario);
+            drawBox(confirmacaoSolicitacao.x, confirmacaoSolicitacao.y, w, h, 'Confirmação (Solicitação Enviada)', colors.beneficiario);
+
+            drawBox(listaSolicitacoes.x, listaSolicitacoes.y, w, h, 'Tela Lista de Solicitações', colors.beneficiario);
+            drawBox(detalhesAgendamento.x, detalhesAgendamento.y, w, h, 'Tela Detalhes do Agendamento', colors.beneficiario);
+            
+            // Fluxo Doador
+            drawBox(formAnuncio.x, formAnuncio.y, w, h, 'Tela Cadastro de Anúncio', colors.doador);
+            drawBox(confirmacaoAnuncio.x, confirmacaoAnuncio.y, w, h, 'Confirmação (Anúncio Publicado)', colors.doador);
+
+            drawBox(listaAnuncios.x, listaAnuncios.y, w, h, 'Tela Lista de Anúncios', colors.doador);
+            drawBox(detalhesSolicitacao.x, detalhesSolicitacao.y, w, h, 'Tela Detalhes da Solicitação', colors.doador);
+            drawBox(confirmacaoAprovacao.x, confirmacaoAprovacao.y, w, h, 'Confirmação (Aprovação/Rejeição)', colors.doador);
+
+            drawBox(dashboard.x, dashboard.y, w, h, 'Tela Dashboard de Impacto (PJ)', colors.doador);
+            
+            // --- Desenho das Setas ---
+            // Início
+            drawArrow(start.x + w/2, start.y + h, login.x + w/2, login.y);
+            drawArrow(start.x + w/2, start.y + h/2, cadastro.x + w, cadastro.y + h/2, 'Novo?', 'side', -50, -25);
+            
+            drawArrow(login.x + w/2, login.y + h, tipoUser.x + w/2, tipoUser.y);
+            drawArrow(cadastro.x + w/2, cadastro.y + h, tipoUser.x + w/2, tipoUser.y, 'Cadastro OK', 'bottom', -100);
+
+            // Bifurcação
+            drawArrow(tipoUser.x, tipoUser.y + h/2, homeBeneficiario.x + w, homeBeneficiario.y + h/2, 'Beneficiário', 'side', -60, -20);
+            drawArrow(tipoUser.x + w, tipoUser.y + h/2, homeDoador.x, homeDoador.y + h/2, 'Doador', 'side', -40, -20);
+
+            // Fluxo Beneficiário
+            drawArrow(homeBeneficiario.x + w/2, homeBeneficiario.y + h, catalogo.x + w/2, catalogo.y, 'Busca/Navega');
+            drawArrow(catalogo.x + w/2, catalogo.y + h, detalhesAnuncio.x + w/2, detalhesAnuncio.y, 'Clica no Item');
+            drawArrow(detalhesAnuncio.x + w/2, detalhesAnuncio.y + h, formSolicitacao.x + w/2, formSolicitacao.y, 'Clica em "Solicitar"');
+            drawArrow(formSolicitacao.x + w, formSolicitacao.y + h/2, confirmacaoSolicitacao.x, confirmacaoSolicitacao.y + h/2, 'Envia Pedido');
+            
+            drawArrow(homeBeneficiario.x, homeBeneficiario.y + h/2, listaSolicitacoes.x + w, listaSolicitacoes.y + h/2, 'Minhas Solicitações');
+            drawArrow(listaSolicitacoes.x + w/2, listaSolicitacoes.y + h, detalhesAgendamento.x + w/2, detalhesAgendamento.y, 'Clica na Solicitação');
+            
+            // Curva de volta
+            ctx.beginPath();
+            ctx.moveTo(confirmacaoSolicitacao.x + w/2, confirmacaoSolicitacao.y);
+            ctx.bezierCurveTo(confirmacaoSolicitacao.x + w, confirmacaoSolicitacao.y - 80, homeBeneficiario.x + w, homeBeneficiario.y - 80, homeBeneficiario.x + w/2, homeBeneficiario.y);
+            ctx.stroke();
+            const endX = homeBeneficiario.x + w/2;
+            const endY = homeBeneficiario.y;
+            const startX = endX + 10;
+            const startY = endY + 10;
+            const angleBackB = Math.atan2(endY - startY, endX - startX);
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - 10 * Math.cos(angleBackB - Math.PI / 6), endY - 10 * Math.sin(angleBackB - Math.PI / 6));
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - 10 * Math.cos(angleBackB + Math.PI / 6), endY - 10 * Math.sin(angleBackB + Math.PI / 6));
+            ctx.stroke();
+
+
+            // Fluxo Doador
+            drawArrow(homeDoador.x + w/2, homeDoador.y + h, formAnuncio.x + w/2, formAnuncio.y, 'Clica em "+"');
+            drawArrow(formAnuncio.x, formAnuncio.y + h/2, confirmacaoAnuncio.x + w, confirmacaoAnuncio.y + h/2, 'Publica');
+            
+            drawArrow(homeDoador.x + w, homeDoador.y + h/2, listaAnuncios.x, listaAnuncios.y + h/2, 'Meus Anúncios');
+            drawArrow(listaAnuncios.x + w/2, listaAnuncios.y + h, detalhesSolicitacao.x + w/2, detalhesSolicitacao.y, 'Clica na Solicitação');
+            drawArrow(detalhesSolicitacao.x, detalhesSolicitacao.y + h/2, confirmacaoAprovacao.x + w, confirmacaoAprovacao.y + h/2, 'Aprova/Rejeita');
+
+            drawArrow(homeDoador.x + w, homeDoador.y, dashboard.x, dashboard.y + h, 'Dashboard (PJ)');
+
+            // Curva de volta
+            ctx.beginPath();
+            ctx.moveTo(confirmacaoAnuncio.x + w/2, confirmacaoAnuncio.y);
+            ctx.bezierCurveTo(confirmacaoAnuncio.x, confirmacaoAnuncio.y - 80, homeDoador.x, homeDoador.y - 80, homeDoador.x + w/2, homeDoador.y);
+            ctx.stroke();
+             const endXD = homeDoador.x + w/2;
+            const endYD = homeDoador.y;
+            const startXD = endXD - 10;
+            const startYD = endYD + 10;
+            const angleBackD = Math.atan2(endYD - startYD, endXD - startXD);
+            ctx.beginPath();
+            ctx.moveTo(endXD, endYD);
+            ctx.lineTo(endXD - 10 * Math.cos(angleBackD - Math.PI / 6), endYD - 10 * Math.sin(angleBackD - Math.PI / 6));
+            ctx.moveTo(endXD, endYD);
+            ctx.lineTo(endXD - 10 * Math.cos(angleBackD + Math.PI / 6), endYD - 10 * Math.sin(angleBackD + Math.PI / 6));
+            ctx.stroke();
+
+        }
+    </script>
+</body>
+</html>
