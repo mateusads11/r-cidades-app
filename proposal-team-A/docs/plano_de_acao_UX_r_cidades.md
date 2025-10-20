@@ -59,7 +59,7 @@ Este é o **Wireframe de Baixa Fidelidade**
 
 ### **Próximo Passo**
 
-1.  **Criar as seguintes Issues e colocá-las na coluna **"A Fazer"**:
+1.  **Criar as seguintes Issues e colocá-las na coluna**"A Fazer"**:
     * `[UX] Definir Personas de Usuários (Doador e Beneficiário)`
     * `[UX] Mapear a Jornada do Usuário Doador`
     * `[UX] Desenhar o Fluxograma de Navegação do App (v1)`
