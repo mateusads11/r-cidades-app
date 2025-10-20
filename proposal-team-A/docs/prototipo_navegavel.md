@@ -2,7 +2,7 @@
 
 Este documento centraliza o acesso ao protótipo navegável de baixa fidelidade desenvolvido no Figma para a Proposta A do R+Cidades.
 
-O protótipo conecta os wireframes das 12+ telas essenciais do aplicativo, demonstrando visualmente a arquitetura de informação e os fluxos de usuário definidos para as Personas de Doador e Beneficiário, baseados no schema de banco de dados v3.0 Híbrido.
+O protótipo conecta os wireframes das 11+ telas essenciais do aplicativo, demonstrando visualmente a arquitetura de informação e os fluxos de usuário definidos para as Personas de Doador e Beneficiário, baseados no schema de banco de dados v3.0 Híbrido.
 
 ## Acesso ao Protótipo
 
