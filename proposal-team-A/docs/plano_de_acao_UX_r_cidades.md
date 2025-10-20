@@ -47,7 +47,7 @@ Agora que sabemos *quem* é o usuário, vamos organizar o app para ele.
 
 #### **Fase 3: Esboço (O que tem em cada tela?)**
 
-Este é o **Wireframe de Baixa Fidelidade** que você corretamente mencionou.
+Este é o **Wireframe de Baixa Fidelidade** 
 
 * **Ação 4: Desenhar os Wireframes (O "Esqueleto")**
     * **O que é:** Um desenho *sem cores, sem fontes bonitas, sem imagens*. Apenas caixas, linhas e texto-padrão ("Lorem Ipsum" ou "Título da Página").
@@ -59,9 +59,7 @@ Este é o **Wireframe de Baixa Fidelidade** que você corretamente mencionou.
 
 ### **Próximo Passo**
 
-1.  Vá até o seu GitHub, na aba "Projects".
-2.  Mover o cartão **"Criar protótipo visual de alta fidelidade"** para o final da fila.
-3.  Criar as seguintes Issues e colocá-las na coluna **"A Fazer"**:
+1.  **Criar as seguintes Issues e colocá-las na coluna **"A Fazer"**:
     * `[UX] Definir Personas de Usuários (Doador e Beneficiário)`
     * `[UX] Mapear a Jornada do Usuário Doador`
     * `[UX] Desenhar o Fluxograma de Navegação do App (v1)`
