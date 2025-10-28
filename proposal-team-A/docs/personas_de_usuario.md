@@ -1,5 +1,3 @@
-Esta tarefa define os perfis de usuário (Personas) que guiarão o design e desenvolvimento do R+Cidades. As personas são baseadas nos documentos de pesquisa sobre o mercado de construção e o déficit habitacional em Florianópolis.
-
 **Perfis de Doadores:**
 1.  Gestor de ESG (Grande Construtora)
 2.  Gestor Público (Prefeitura/Órgãos)
