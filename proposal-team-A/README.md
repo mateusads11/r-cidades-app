@@ -11,9 +11,9 @@ A base da nossa solução é um banco de dados relacional (MySQL) projetado para
 
 Essa dualidade permite que beneficiários validados solicitem materiais tanto de grandes doações P2P quanto do estoque centralizado. A lógica completa, incluindo o fluxo de solicitação, aprovação e logística modular, está detalhada no schema e no guia principal do banco de dados na pasta `/docs`.
 
-* **[Visualizar o Diagrama ER (v3.0 Híbrido)](../docs/diagrama_entidade_relacionamento_v3.png)**
+* **[Visualizar o Diagrama ER (v3.0 Híbrido)](../docs/diagrama_entidade_relacionamento.png)**
 * **[Consultar o Script SQL (v3.0 Híbrido)](../database/schema.sql)**
-* **[Ler o Guia Detalhado ("O Cérebro do App")](../docs/O%20C%C3%A9rebro%20do%20Aplicativo.pdf)**
+* **[Ler o Guia Detalhado ("O Cérebro do App")](../docs/O Cérebro do Aplicativo.md)**
 
 ## 🚀 Protótipo Navegável
 

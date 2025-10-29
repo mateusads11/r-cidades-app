@@ -22,7 +22,7 @@ A vossa missão agora é dar vida a este esqueleto, aplicando os princípios de 
 
 3.  **Diretrizes de UI (Resultado da Pesquisa)**
 
-    A nossa [pesquisa (../../docs/Pesquisa Projeto R+ Cidades Florianópolis.pdf)](../../docs/Pesquisa%20Projeto%20R+%20Cidades%20Florianópolis.pdf) nos deu diretrizes claras para a identidade visual.
+    A nossa [pesquisa (../../docs/Pesquisa Projeto R+ Cidades Florianópolis.pdf)](../../docs/Pesquisa Projeto R+ Cidades Florianópolis.md) nos deu diretrizes claras para a identidade visual.
 
     **Paleta de Cores Recomendada ("Construção Consciente"):**
 
