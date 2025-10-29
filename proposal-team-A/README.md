@@ -13,7 +13,7 @@ Essa dualidade permite que beneficiários validados solicitem materiais tanto de
 
 * **[Visualizar o Diagrama ER (v3.0 Híbrido)](../docs/diagrama_entidade_relacionamento.png)**
 * **[Consultar o Script SQL (v3.0 Híbrido)](../database/schema.sql)**
-* **[Ler o Guia Detalhado ("O Cérebro do App")](../docs/O Cérebro do Aplicativo.md)**
+* **[Ler o Guia Detalhado ("O Cérebro do App")](../docs/o_cerebro_do_aplicativo.md)**
 
 ## 🚀 Protótipo Navegável
 
